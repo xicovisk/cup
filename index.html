@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A Cúpula | O Escolhido</title>
+  <link rel="preconnect" href="[fonts.googleapis.com](https://fonts.googleapis.com)">
+  <link rel="preconnect" href="[fonts.gstatic.com](https://fonts.gstatic.com)" crossorigin>
+  <link href="[fonts.googleapis.com](https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap)" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg: #070709;
+      --card-bg: rgba(18, 18, 24, 0.75);
+      --border: rgba(255, 215, 0, 0.15);
+      --gold: #d4af37;
+      --gold-glow: rgba(212, 175, 55, 0.35);
+      --text-main: #f0f0f2;
+      --text-muted: #8a8a93;
+      --danger: #e63946;
+      --transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Fundo com efeito de névoa e luz */
+    body::before {
+      content: "";
+      position: fixed;
+      top: -20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, var(--gold-glow) 0%, transparent 70%);
+      filter: blur(80px);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 440px;
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 2.5rem 2rem;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Cabeçalho */
+    .header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .sigil {
+      width: 52px;
+      height: 52px;
+      margin: 0 auto 1.25rem;
+      border: 1.5px solid var(--gold);
+      transform: rotate(45deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 15px var(--gold-glow);
+    }
+
+    .sigil-inner {
+      width: 22px;
+      height: 22px;
+      background: var(--gold);
+      border-radius: 2px;
+    }
+
+    h1 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.85rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: #fff;
+      text-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      margin-top: 0.4rem;
+    }
+
+    /* Seletor de abas */
+    .tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 10px;
+      padding: 4px;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      padding: 0.75rem 0.5rem;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      border-radius: 7px;
+      transition: var(--transition);
+    }
+
+    .tab-btn.active {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .tab-btn.chosen-btn.active {
+      color: var(--gold);
+      background: rgba(212, 175, 55, 0.12);
+      border: 1px solid rgba(212, 175, 55, 0.25);
+    }
+
+    /* Formulários */
+    .form-panel {
+      display: none;
+      flex-direction: column;
+      gap: 1.25rem;
+      animation: fadeIn 0.4s ease forwards;
+    }
+
+    .form-panel.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      text-align: left;
+    }
+
+    label {
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    input {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      padding: 0.85rem 1rem;
+      color: #fff;
+      font-size: 0.95rem;
+      font-family: inherit;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    input:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 10px var(--gold-glow);
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    /* Painel O Escolhido */
+    .chosen-notice {
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      font-style: italic;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 0.9rem;
+      margin-top: 0.5rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .btn-member {
+      background: #f0f0f2;
+      color: #070709;
+    }
+
+    .btn-member:hover {
+      background: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-chosen {
+      background: linear-gradient(135deg, #d4af37, #997c1e);
+      color: #070709;
+    }
+
+    .btn-chosen:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px var(--gold-glow);
+    }
+
+    /* Mensagens de feedback */
+    .message {
+      font-size: 0.8rem;
+      text-align: center;
+      min-height: 1.2rem;
+      opacity: 0;
+      transition: var(--transition);
+    }
+
+    .message.error {
+      color: var(--danger);
+      opacity: 1;
+    }
+
+    .message.success {
+      color: #4ade80;
+      opacity: 1;
+    }
+
+    /* Rodapé */
+    .footer {
+      margin-top: 2rem;
+      text-align: center;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      color: rgba(255, 255, 255, 0.2);
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 2rem 1.5rem;
+      }
+      h1 {
+        font-size: 1.6rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <main class="container">
+    <header class="header">
+      <div class="sigil">
+        <div class="sigil-inner"></div>
+      </div>
+      <h1>A Cúpula</h1>
+      <p class="subtitle">Apenas os dignos ultrapassam o umbral.</p>
+    </header>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="member">Membros</button>
+      <button class="tab-btn chosen-btn" data-tab="chosen">O Escolhido</button>
+    </div>
+
+    <!-- 1. Formulário de Membros Credenciados -->
+    <form class="form-panel active" id="memberForm">
+      <div class="input-group">
+        <label for="memberId">Identificador ou E-mail</label>
+        <input type="text" id="memberId" placeholder="ex: oraculo@cupula.org" required autocomplete="off" />
+      </div>
+
+      <div class="input-group">
+        <label for="memberPass">Credencial Secreta</label>
+        <input type="password" id="memberPass" placeholder="••••••••" required />
+      </div>
+
+      <button type="submit" class="btn-submit btn-member">Acessar Arquivos</button>
+      <div class="message" id="memberMsg"></div>
+    </form>
+
+    <!-- 2. Formulário para O Escolhido -->
+    <form class="form-panel" id="chosenForm">
+      <p class="chosen-notice">
+        "Você recebeu o chamado? Insira o sigilo definitivo para reivindicar seu lugar."
+      </p>
+
+      <div class="input-group">
+        <label for="chosenKey">Palavra-Passe do Escolhido</label>
+        <input type="password" id="chosenKey" placeholder="Insira o código primordial..." required autocomplete="off" />
+      </div>
+
+      <button type="submit" class="btn-submit btn-chosen">Quebrar o Selo</button>
+      <div class="message" id="chosenMsg"></div>
+    </form>
+
+    <footer class="footer">
+      Soberania • Silêncio • Eternidade
+    </footer>
+  </main>
+
+  <script>
+    // Gerenciador de Abas
+    const tabs = document.querySelectorAll('.tab-btn');
+    const memberForm = document.getElementById('memberForm');
+    const chosenForm = document.getElementById('chosenForm');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        const target = tab.dataset.tab;
+        if (target === 'member') {
+          memberForm.classList.add('active');
+          chosenForm.classList.remove('active');
+        } else {
+          chosenForm.classList.add('active');
+          memberForm.classList.remove('active');
+        }
+      });
+    });
+
+    // Simulação de Login de Membro
+    memberForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const msg = document.getElementById('memberMsg');
+      msg.className = 'message success';
+      msg.textContent = 'Autenticando na rede secreta...';
+
+      setTimeout(() => {
+        msg.textContent = 'Acesso concedido. Bem-vindo de volta, irmão.';
+      }, 1200);
+    });
+
+    // Simulação do Enigma / Validação para "O Escolhido"
+    chosenForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const keyInput = document.getElementById('chosenKey');
+      const msg = document.getElementById('chosenMsg');
+      const secret = keyInput.value.trim().toLowerCase();
+
+      // Senha pré-definida de teste: "escolhido" ou "a cupula"
+      if (secret === 'escolhido' || secret === 'a cupula') {
+        msg.className = 'message success';
+        msg.textContent = 'O selo se rompeu. Você é O Escolhido.';
+        keyInput.style.borderColor = '#4ade80';
+      } else {
+        msg.className = 'message error';
+        msg.textContent = 'Chave recusada. O umbral permanece fechado.';
+        keyInput.style.borderColor = 'var(--danger)';
+      }
+    });
+  </script>
+</body>
+</html>
